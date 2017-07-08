@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 struct dataType
@@ -10,98 +11,95 @@ struct dataType
 
 typedef struct dataType strDataType;
 
-void menu();
-void appendFile(FILE **fileTaxes);
-void readFile(FILE **fileTaxes);
-void appendData(FILE **fileTaxes);
-void showData(FILE **fileTaxes);
+void openFile(FILE **fileTaxes);
+void breakControl(FILE **fileTaxes);
+void cleanString(char str[]);
+int compareString(char str1[], char str2[]);
 void closeFile(FILE **fileTaxes);
 
-int main ()
-{
-	menu();
-	
-	return 0;
-}
-
-void menu()
+int main()
 {
 	FILE *fileTaxes;
-	char op;
 	
-	do
-	{
-		printf("#1> Ingresar provincia, localidad e impuesto\n");
-		printf("#2> Visualizar por pantalla los datos del archivo\n");
-		printf("#0> Salir del programa\n");
-		printf("#>> Cual opcion desea elegir? ");
-		fflush(stdin);
-		scanf("%c", &op);
-		
-		system("cls");
-		
-		switch (op)
-		{
-			case '1':
-				appendFile(&fileTaxes);
-				appendData(&fileTaxes);
-				closeFile(&fileTaxes);
-				printf("\n");
-				break;
-			
-			case '2':
-				readFile(&fileTaxes);
-				showData(&fileTaxes);
-				closeFile(&fileTaxes);
-				printf("\n");
-				break;
-		}
-		
-	} while (op != '0' || op != '0');
+	openFile(&fileTaxes);
+	breakControl(&fileTaxes);
+	closeFile(&fileTaxes);
 }
 
-void appendFile(FILE **fileTaxes)
-{
-	*fileTaxes = fopen("fileTaxes.dat", "ab");
-}
-
-void readFile(FILE **fileTaxes)
+void openFile(FILE **fileTaxes)
 {
 	*fileTaxes = fopen("fileTaxes.dat", "rb");
-}
-
-void appendData(FILE **fileTaxes)
-{
-	strDataType strStates;
 	
-	printf("Ingrese la provincia: ");
-	fflush(stdin);
-	scanf("%[^\n]", strStates.state);
-	
-	printf("Ingrese la localidad: ");
-	fflush(stdin);
-	scanf("%i", &strStates.city);
-	
-	printf("Ingrese los impuestos totales: ");
-	fflush(stdin);
-	scanf("%i", &strStates.tax);
-	
-	fwrite(&strStates, sizeof(strDataType), 1, *fileTaxes);
-}
-
-void showData(FILE **fileTaxes)
-{
-	strDataType strStates;
-	
-	printf ("%-20s %-20s %-10s\n\n", "Provincia", "Localidad", "Impuesto");
-	
-	while (fread(&strStates, sizeof(strDataType), 1, *fileTaxes))
+	if (*fileTaxes == NULL)
 	{
-		printf ("%-20s %-20i %-10i\n", strStates.state, strStates.city, strStates.tax);
+		exit(1);
 	}
 }
 
-void closeFile (FILE **fileTaxes)
+void breakControl(FILE **fileTaxes)
 {
-	fclose (*fileTaxes);
+	strDataType strState;
+	
+	char breakState[30] = "";
+	int breakCity = 0;
+	int totalTaxes = 0;
+	
+	printf ("%-20s %-20s %-10s\n\n", "State", "City", "Total Taxes");
+	
+	fread(&strState, sizeof(strDataType), 1, *fileTaxes);
+	
+	while (!feof(*fileTaxes))
+	{
+		strcpy (breakState, strState.state);
+		breakCity = strState.city;
+		
+		while (compareString(breakState, strState.state) == 1 && !feof(*fileTaxes))
+		{
+			while (breakCity == strState.city && !feof(*fileTaxes))
+			{
+				totalTaxes += strState.tax;
+				fread(&strState, sizeof(strDataType), 1, *fileTaxes);
+			}
+
+			printf ("%-20s %-20i %-10i\n", breakState, breakCity, totalTaxes);
+		
+			totalTaxes = 0;
+		
+			breakCity = strState.city;
+		}
+		
+		cleanString(breakState);
+	}
+}
+
+void cleanString(char str[])
+{
+	for (int i = 0; i < 30; i++)
+	{
+		str[i] = '\0';
+	}
+}
+
+int compareString(char str1[], char str2[])
+{
+	int aux = 1;
+	int lenght;
+	
+	lenght = strlen(str1);
+	
+	for (int i = 0; i < lenght; i++)
+	{
+		if (str1[i] != str2[i])
+		{
+			aux = 0;
+			break;
+		}
+	}
+	
+	return aux;
+}
+
+void closeFile(FILE **fileTaxes)
+{
+	fclose(*fileTaxes);
 }
