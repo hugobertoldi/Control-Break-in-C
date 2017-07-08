@@ -24,6 +24,8 @@ int main()
 	openFile(&fileTaxes);
 	breakControl(&fileTaxes);
 	closeFile(&fileTaxes);
+	
+	system("pause");
 }
 
 void openFile(FILE **fileTaxes)
