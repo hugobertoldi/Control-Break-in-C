@@ -28,7 +28,7 @@ int main()
 
 void openFile(FILE **fileTaxes)
 {
-	*fileTaxes = fopen("fileTaxes.dat", "rb");
+	*fileTaxes = fopen("fileTaxes.bin", "rb");
 	
 	if (*fileTaxes == NULL)
 	{
