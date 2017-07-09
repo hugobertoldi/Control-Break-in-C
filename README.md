@@ -1,11 +1,11 @@
 # Break-Control-in-C
 How to do a break control in C with a binary file / Como hacer un corte de control en C con una archivo binario
-.
-Basically, this is what the binary file has in it:
-En resumen, esto es lo que el archivo binario tiene escrito:
-.
+
+Basically, this is what the binary file has in it
+En resumen, esto es lo que el archivo binario tiene escrito
+
 State             City             Tax
-.
+
 Corrientes        1                35
 Corrientes        1                13
 Corrientes        2                36
