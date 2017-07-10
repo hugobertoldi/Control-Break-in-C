@@ -1,7 +1,8 @@
-# Break-Control-in-C
-How to do a break control in C with a binary file / Como hacer un corte de control en C con una archivo binario.
+# Control-Break-in-C
+How to do a control break in C with a binary file / Como hacer un corte de control en C con una archivo binario.
 
 IMPORTANT: IF YOU ARE VIEWING THIS FILE IN THE REPOSITORY ON GITHUB.COM, SWITCH TO "RAW" MODE.
+IMPORTANTE: SI ESTAS VIENDO ESTE ARCHIVO DEL REPOSITORIO EN GITHUB.COM, CAMBIÁ AL MODO "RAW".
 
 Basically, this is what the binary file has in it:
 En resumen, esto es lo que el archivo binario tiene escrito:
